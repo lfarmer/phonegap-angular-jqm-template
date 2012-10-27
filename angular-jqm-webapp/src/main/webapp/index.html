@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="justeatsafe">
+  <head>
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <title>Just Eat Safe</title>
+      <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css"/>
+      <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+      <script type="text/javascript" charset="utf-8" src="main.js"></script>
+      <script src="js/jquery-1.7.1.min.js"></script>
+      <script src="js/jquery.mobile-1.2.0.min.js"></script>
+      <script src="js/angular.min.js"></script>
+      <script src="js/angular-resource.min.js"></script>
+      <script src="js/jquery-mobile-angular-adapter-1.1.0.js"></script>
+      <script src="js/bootstrap.js"></script>
+      <script src="scripts/app.js"></script>
+      <script src="scripts/services.js"></script>
+      <script src="scripts/controllers.js"></script>
+  </head>
+  <body onload="init();" id="stage" class="theme">
+  <div ng-controller="HomeCtrl">
+      <div data-role="page" id="home">
+          <div data-theme="a" data-role="header" data-position="fixed">
+              <h3> Just Eat Safe </h3>
+          </div>
+
+          <div data-role="content">
+              <form ng-submit="searchFor()" data-ajax="false">
+                  <div data-role="fieldcontain">
+                      <fieldset data-role="controlgroup">
+                          <label for="searchinput"> Search </label>
+                          <input name="search" ng-model="$parent.search" id="searchinput"
+                                 placeholder="Restaurant Name etc etc ... " type="search"/>
+                      </fieldset>
+                  </div>
+                  <input type="submit" data-icon="arrow-d" data-iconpos="right" value="Submit"/>
+              </form>
+              <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                  <li data-role="list-divider" role="heading">
+                      Business Name - Local Authority
+                  </li>
+                  <li data-theme="c"
+                      ng-repeat="place in foodplace.FHRSEstablishment.EstablishmentCollection.EstablishmentDetail">
+                      <a href="#" ng-click="showDetail(place)" data-transition="slide">{{place.BusinessName}} -
+                          {{place.LocalAuthorityName}} </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+
+      <div data-role="page" id="detail" ngm-swiperight="back()">
+          <h2>{{business.BusinessName}}</h2>
+
+          <div>
+              <img src="img/{{business.RatingKey | lowercase}}.jpg">
+          </div>
+          <div data-role="collapsible-set" data-theme="b" data-content-theme="">
+              <div data-role="collapsible" data-collapsed="trues">
+                  <h3> Inspection Date </h3>
+                  {{business.RatingDate | date:'yyyy-MM-dd'}}
+              </div>
+              <div data-role="collapsible" data-collapsed="true">
+                  <h3> Address </h3>
+
+                  <p>
+                      {{business.AddressLine1}}
+                      <br>
+                      {{business.AddressLine2}},
+                      <br>
+                      {{business.AddressLine3}},
+                      <br>
+                      {{business.AddressLine4}}
+                      <br>
+                      {{business.PostCode}}
+                  </p>
+                  <input type="hidden" id="bizLong" value="{{business.Geocode.Longitude}}" />
+                  <input type="hidden" id="bizLat" value="{{business.Geocode.Latitude}}" />
+                  <p><a href="#location">find location</a></p>
+              </div>
+          </div>
+
+      </div>
+
+      <div data-role="page" id="location">
+          <div class="ui-bar-c ui-corner-all ui-shadow" id="map_item">
+            <div id="map_canvas"></div>
+          </div>
+
+          <script type="text/javascript" charset="utf-8"
+                  src="scripts/map.js"></script>
+      </div>
+  </div>
+  </body>
+</html>
